@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Arial";
+  margin: 0;
+  background: url("/img/Screen.png");
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  width: 100%;
+  height: 100vh;
+  position: relative;
+
+  @media screen and (max-width: 800px) {
+    background: url("/img/Screen_mobile.png");
+  }
+}
+
+// main {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   height: 100vh;
+
+//   @media screen and (max-width: 800px) {
+//     height: auto;
+//   }
+// }
+
+.max-w-sm-custom {
+  max-width: 250px;
+
+  @media screen and (max-width: 800px) {
+    max-width: auto;
+  }
+}
+
+.--show-title {
+  & > h2 {
+    opacity: 0;
+  }
+  &:hover {
+    transform: scale(1.1);
+    transition: 1s ease;
+    & > h2 {
+      opacity: 1;
+      transition: 2s ease;
+      transform: translateY(10px);
+    }
+  }
+}
+
+.animation-show-slow {
+  opacity: 0;
+  transform: translateX(-100%);
+  animation: show-slow 2s ease-in-out 300ms;
+}
+
+@keyframes show-slow {
+  to {
+    transform: translateX(-100%);
+  }
+  from {
+    opacity: 1;
+    transform: translateX(10%);
+  }
+}
+
+.scale-up-hor-left {
+  -webkit-animation: scale-up-hor-left 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: scale-up-hor-left 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+
+@-webkit-keyframes scale-up-hor-left {
+  0% {
+    -webkit-transform: scaleX(0.4);
+    transform: scaleX(0.4);
+    -webkit-transform-origin: 0% 0%;
+    transform-origin: 0% 0%;
+  }
+  100% {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+    -webkit-transform-origin: 0% 0%;
+    transform-origin: 0% 0%;
+  }
+}
+@keyframes scale-up-hor-left {
+  0% {
+    -webkit-transform: scaleX(0.4);
+    transform: scaleX(0.4);
+    -webkit-transform-origin: 0% 0%;
+    transform-origin: 0% 0%;
+  }
+  100% {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+    -webkit-transform-origin: 0% 0%;
+    transform-origin: 0% 0%;
+  }
+}
