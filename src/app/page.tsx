@@ -1,58 +1,86 @@
 "use client";
-import { ReactNode, useState } from "react";
-import Image from "next/image";
+import { ReactNode, useEffect, useState } from "react";
 import Card from "@/components/Card";
 import Modal from "@/components/Modal";
-import Profile from "~/img/Profile.png";
+import Profile from "@/components/Modal/Profile";
+import Experience from "@/components/Modal/Experience";
+import Projects from "@/components/Modal/Projects";
+import Skills from "@/components/Modal/Skills";
+import Writings from "@/components/Writings";
+
+type IModal = {
+  isOpen: boolean;
+  typeModal?: string;
+};
+
+// function VerifyTypeModal(useModal: any) {
+//   return (
+//     <>
+//       {useModal.typeModal?.includes("Perfil") && }
+//       {useModal.typeModal?.includes("Experiencia") && }
+//     </>
+//   );
+// }
+
 export default function Home() {
-  const [useModal, setModal] = useState<boolean>(false);
+  const [useModal, setModal] = useState<IModal>({ isOpen: false });
+  const [showContent, setShowContent] = useState(false);
 
-  const title = [
-    { title: "Perfil", image: "/img/male_user.png" },
-    { title: "Experiencias", image: "/img/icon_work.png" },
-    { title: "habilidades", image: "/img/icon_skills.png" },
-    { title: "Projetos", image: "/img/icon_projects.png" },
-    { title: "Social", image: "/img/icon_linkedin.png" },
-  ];
+  const [showWriting, setShowWriting] = useState("writingsAnimation-in");
+  let [remove, setRemove] = useState(true);
 
-  const click = (title = ""): void => {
-    setModal(!useModal);
-  };
+  let typeCard = "";
+  let typeAnimation = "";
+  let element: ReactNode;
+
+  if (useModal.typeModal?.includes("Perfil")) {
+    typeCard += "max-w-[500px]";
+    typeAnimation = "my-nodeleft";
+    element = <Profile />;
+  } else if (useModal?.typeModal?.includes("Experiencias")) {
+    typeCard += "max-w-[800px] right-0";
+    typeAnimation = "my-noderight";
+    element = <Experience />;
+  } else if (useModal?.typeModal?.includes("Habilidades")) {
+    typeCard += "max-h-[300px] bottom-0";
+    element = <Skills />;
+  } else if (useModal?.typeModal?.includes("Projetos")) {
+    typeCard += "max-h-[400px] bottom-0";
+    element = <Projects />;
+  }
+
+  useEffect(() => {
+    setTimeout(() => setShowContent(true), 3000);
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => setShowWriting("writingsAnimation-out"), 2000);
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => setRemove(false), 3000);
+  }, []);
 
   return (
     <>
-      <main className="flex flex-wrap max-w-5xl mx-auto w-full justify-center items-center gap-4 p-4 relative top-1/4">
-        {title.map((prop, index) => {
-          return (
-            <Card
-              key={prop.title}
-              title={prop.title}
-              image={prop.image}
-              className={index > 1 ? "md:max-w-[250px]" : "md:max-w-sm"}
-              click={click}
-            />
-          );
-        })}
+      {remove && <Writings showWriting={showWriting} />}
+      <main className="top-1/4 relative flex flex-col items-center">
+        {showContent && (
+          <>
+            <h1 className="text-white text-6xl cardAnimation">
+              Flávio Leonardo
+            </h1>
+            <Card setModal={setModal} />
+          </>
+        )}
       </main>
-
-      {useModal && (
-        <Modal className="position fixed top-0 left-0 w-full h-screen bg-opacity-20 bg-gray-400 ">
-          <div className="bg-white z-10 h-screen max-w-[660px] flex flex-col justify-center items-center p-6 scale-up-hor-left">
-            <div className="w-full flex justify-end">
-              <div onClick={() => click()}>X</div>
-            </div>
-
-            <div>
-              <Image
-                src={Profile}
-                alt="imagem de perfil"
-                width="200"
-                height="200"
-              />
-            </div>
-          </div>
-        </Modal>
-      )}
+      <Modal
+        useModal={useModal}
+        setModal={setModal}
+        className={{ typeCard, typeAnimation }}
+      >
+        {element}
+      </Modal>
     </>
   );
 }
