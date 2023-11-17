@@ -1,13 +1,13 @@
 import Image from "next/image";
-import { createRef, useEffect, useRef, useState } from "react";
+import { createRef, useContext, useEffect, useRef, useState } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-
+import { Context, OpenModal } from "@/utils/context";
 type IProps = {
   setModal: any;
 };
 
-export default function Card({ setModal }: IProps) {
-  const [items, setItems] = useState(() => [
+export default function Card() {
+  const [items] = useState(() => [
     {
       title: "Perfil",
       image: "/img/male_user.png",
@@ -29,6 +29,7 @@ export default function Card({ setModal }: IProps) {
       image: "/img/icon_linkedin.png",
     },
   ]);
+  const modalContext = useContext<OpenModal>(Context);
 
   return (
     <div className="flex flex-wrap max-w-5xl mx-auto w-full justify-center items-center gap-4 p-4 relative cardAnimation">
@@ -40,7 +41,7 @@ export default function Card({ setModal }: IProps) {
             key={index}
             className={`${className} max-w-full bg-white p-4 w-full h-60 flex flex-col justify-center items-center --show-title cursor-pointer`}
             onClick={() =>
-              setModal({
+              modalContext?.setContext({
                 isOpen: true,
                 typeModal: title,
               })
